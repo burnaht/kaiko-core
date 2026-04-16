@@ -543,11 +543,18 @@
    WC Endpoint Content (Sub-pages)
    ───────────────────────────────────────────── */
 
-/* Hide WC's built-in sidebar navigation — KAIKO has its own */
+/* Hide WoodMart default account nav/content on KAIKO template pages */
+body.kaiko-template .woocommerce-MyAccount-navigation,
+body.kaiko-template .woocommerce-MyAccount-content {
+  display: none !important;
+}
+
+/* But un-hide WC content inside KAIKO's own endpoint area */
 .kaiko-myaccount .k-wc-content .woocommerce-MyAccount-navigation {
-  display: none;
+  display: none !important;
 }
 .kaiko-myaccount .k-wc-content .woocommerce-MyAccount-content {
+  display: block !important;
   width: 100%;
   max-width: 100%;
   float: none;
