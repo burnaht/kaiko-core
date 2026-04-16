@@ -470,4 +470,6 @@ if ( $active_cat ) {
 })();
 </script>
 
+<?php do_action( 'kaiko_after_content' ); ?>
+
 <?php get_footer(); ?>
