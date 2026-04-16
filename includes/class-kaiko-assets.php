@@ -37,6 +37,14 @@ class Kaiko_Assets {
 			KAIKO_CORE_VERSION
 		);
 
+		// Footer styles
+		wp_enqueue_style(
+			'kaiko-footer',
+			KAIKO_CORE_URL . 'assets/css/footer.css',
+			[],
+			KAIKO_CORE_VERSION
+		);
+
 		// Nav JS (hamburger, mobile menu)
 		wp_enqueue_script(
 			'kaiko-nav',

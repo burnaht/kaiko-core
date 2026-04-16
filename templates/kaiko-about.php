@@ -208,4 +208,6 @@ get_header(); ?>
 })();
 </script>
 
+<?php do_action( 'kaiko_after_content' ); ?>
+
 <?php get_footer(); ?>

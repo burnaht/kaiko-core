@@ -67,6 +67,7 @@ final class Kaiko_Core {
 		$module_files = [
 			'class-kaiko-templates'    => 'Kaiko_Templates',
 			'class-kaiko-nav'          => 'Kaiko_Nav',
+			'class-kaiko-footer'       => 'Kaiko_Footer',
 			'class-kaiko-woodmart'     => 'Kaiko_WoodMart_Compat',
 			'class-kaiko-assets'       => 'Kaiko_Assets',
 			'class-kaiko-woocommerce'  => 'Kaiko_WooCommerce',
