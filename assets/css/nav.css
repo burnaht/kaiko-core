@@ -23,7 +23,8 @@ body.kaiko-template .main-page-wrapper,
 body.kaiko-template .kaiko-home,
 body.kaiko-template .kaiko-about,
 body.kaiko-template .kaiko-contact,
-body.kaiko-template .kaiko-products-wrap {
+body.kaiko-template .kaiko-products-wrap,
+body.kaiko-template .kaiko-myaccount {
 	padding-top: 72px !important;
 }
 
@@ -164,7 +165,8 @@ nav.kaiko-nav .kaiko-nav-links a.kaiko-nav-cta:hover,
 	body.kaiko-template .kaiko-home,
 	body.kaiko-template .kaiko-about,
 	body.kaiko-template .kaiko-contact,
-	body.kaiko-template .kaiko-products-wrap {
+	body.kaiko-template .kaiko-products-wrap,
+	body.kaiko-template .kaiko-myaccount {
 		padding-top: 64px !important;
 	}
 

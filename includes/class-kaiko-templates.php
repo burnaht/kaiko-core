@@ -27,7 +27,8 @@ class Kaiko_Templates {
 		'kaiko-homepage.php' => 'KAIKO Homepage',
 		'kaiko-about.php'    => 'KAIKO About',
 		'kaiko-contact.php'  => 'KAIKO Contact',
-		'kaiko-products.php' => 'KAIKO Products',
+		'kaiko-products.php'    => 'KAIKO Products',
+		'kaiko-my-account.php'  => 'KAIKO My Account',
 	];
 
 	/**

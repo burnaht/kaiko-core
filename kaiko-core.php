@@ -70,6 +70,7 @@ final class Kaiko_Core {
 			'class-kaiko-woodmart'     => 'Kaiko_WoodMart_Compat',
 			'class-kaiko-assets'       => 'Kaiko_Assets',
 			'class-kaiko-woocommerce'  => 'Kaiko_WooCommerce',
+			'class-kaiko-trade'        => 'Kaiko_Trade',
 		];
 
 		foreach ( $module_files as $file => $class ) {
@@ -123,6 +124,9 @@ final class Kaiko_Core {
 	 * Plugin deactivation.
 	 */
 	public function deactivate(): void {
+		if ( class_exists( 'Kaiko_Trade' ) ) {
+			Kaiko_Trade::remove_roles();
+		}
 		flush_rewrite_rules();
 	}
 
