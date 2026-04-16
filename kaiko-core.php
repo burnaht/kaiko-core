@@ -73,7 +73,13 @@ final class Kaiko_Core {
 			'class-kaiko-forms'        => 'Kaiko_Forms',
 			'class-kaiko-woocommerce'  => 'Kaiko_WooCommerce',
 			'class-kaiko-trade'        => 'Kaiko_Trade',
+			'class-kaiko-seo'          => 'Kaiko_SEO',
+			'class-kaiko-favicon'      => 'Kaiko_Favicon',
+			'class-kaiko-social'       => 'Kaiko_Social',
 			'class-kaiko-setup'        => 'Kaiko_Setup',
+			'class-kaiko-store-config' => 'Kaiko_Store_Config',
+			'class-kaiko-gdpr'         => 'Kaiko_GDPR',
+			'class-kaiko-smtp'         => 'Kaiko_SMTP',
 		];
 
 		foreach ( $module_files as $file => $class ) {
@@ -122,6 +128,16 @@ final class Kaiko_Core {
 		// Schedule one-time page creation on next admin load
 		if ( class_exists( 'Kaiko_Setup' ) ) {
 			Kaiko_Setup::on_activate();
+		}
+
+		// Schedule one-time WooCommerce store config
+		if ( class_exists( 'Kaiko_Store_Config' ) ) {
+			Kaiko_Store_Config::on_activate();
+		}
+
+		// Seed SMTP defaults (password stored in options, never in code)
+		if ( class_exists( 'Kaiko_SMTP' ) ) {
+			Kaiko_SMTP::on_activate();
 		}
 
 		// Flush rewrite rules so template slugs register

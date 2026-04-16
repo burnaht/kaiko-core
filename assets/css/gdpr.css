@@ -1,0 +1,280 @@
+/**
+ * GDPR Cookie Consent – Banner & Modal
+ *
+ * KAIKO brand: teal (#1a5c52), cream (#faf8f5), dark (#1a1a1a).
+ *
+ * @package KaikoCore
+ */
+
+/* ------------------------------------------------
+   Banner
+   ------------------------------------------------ */
+
+.kaiko-consent-banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99999;
+	background: #1a5c52;
+	color: #fff;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.kaiko-consent-banner-inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 18px 24px;
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+
+.kaiko-consent-text {
+	flex: 1 1 400px;
+	margin: 0;
+}
+
+.kaiko-consent-actions {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-shrink: 0;
+}
+
+/* Shared button style (Accept All / Save preferences) */
+.kaiko-consent-btn {
+	background: #faf8f5;
+	color: #1a5c52;
+	border: none;
+	padding: 10px 24px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: opacity 0.2s;
+	font-family: inherit;
+}
+
+.kaiko-consent-btn:hover {
+	opacity: 0.9;
+}
+
+/* "Manage preferences" link */
+.kaiko-consent-link {
+	background: none;
+	border: none;
+	color: rgba(255, 255, 255, 0.85);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 0;
+	white-space: nowrap;
+	font-family: inherit;
+}
+
+.kaiko-consent-link:hover {
+	color: #fff;
+}
+
+/* ------------------------------------------------
+   Modal
+   ------------------------------------------------ */
+
+.kaiko-consent-modal {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.kaiko-consent-modal-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.kaiko-consent-modal-content {
+	position: relative;
+	background: #fff;
+	border-radius: 12px;
+	width: 90%;
+	max-width: 480px;
+	max-height: 90vh;
+	overflow-y: auto;
+	padding: 32px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.kaiko-consent-modal-title {
+	margin: 0 0 8px;
+	font-size: 20px;
+	font-weight: 700;
+	color: #1a1a1a;
+}
+
+.kaiko-consent-modal-desc {
+	margin: 0 0 24px;
+	font-size: 14px;
+	color: #555;
+	line-height: 1.5;
+}
+
+/* ------------------------------------------------
+   Category rows
+   ------------------------------------------------ */
+
+.kaiko-consent-categories {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.kaiko-consent-category {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 16px 0;
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+}
+
+.kaiko-consent-category:last-child {
+	border-bottom: none;
+}
+
+.kaiko-consent-category-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.kaiko-consent-category-info strong {
+	font-size: 15px;
+	color: #1a1a1a;
+}
+
+.kaiko-consent-category-info span {
+	font-size: 13px;
+	color: #777;
+}
+
+/* ------------------------------------------------
+   Toggle switch
+   ------------------------------------------------ */
+
+.kaiko-consent-toggle {
+	position: relative;
+	flex-shrink: 0;
+}
+
+.kaiko-consent-toggle input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.kaiko-consent-toggle-track {
+	display: block;
+	width: 44px;
+	height: 24px;
+	background: #ccc;
+	border-radius: 12px;
+	position: relative;
+	transition: background 0.2s;
+}
+
+.kaiko-consent-toggle-track::after {
+	content: '';
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	background: #fff;
+	border-radius: 50%;
+	transition: transform 0.2s;
+}
+
+.kaiko-consent-toggle input:checked + .kaiko-consent-toggle-track {
+	background: #1a5c52;
+}
+
+.kaiko-consent-toggle input:checked + .kaiko-consent-toggle-track::after {
+	transform: translateX(20px);
+}
+
+/* Disabled (essential) — always on, greyed out */
+.kaiko-consent-toggle--disabled .kaiko-consent-toggle-track {
+	background: #a8c5c0;
+	cursor: not-allowed;
+}
+
+.kaiko-consent-toggle--disabled input:checked + .kaiko-consent-toggle-track {
+	background: #a8c5c0;
+}
+
+.kaiko-consent-toggle--disabled {
+	pointer-events: none;
+}
+
+/* ------------------------------------------------
+   Modal actions
+   ------------------------------------------------ */
+
+.kaiko-consent-modal-actions {
+	margin-top: 24px;
+	text-align: right;
+}
+
+/* ------------------------------------------------
+   Footer "Cookie Settings" link
+   ------------------------------------------------ */
+
+.kaiko-footer-cookie-link {
+	background: none;
+	border: none;
+	color: rgba(255, 255, 255, 0.7);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	cursor: pointer;
+	font-size: 13px;
+	padding: 0;
+	margin-left: 12px;
+	font-family: inherit;
+}
+
+.kaiko-footer-cookie-link:hover {
+	color: #fff;
+}
+
+/* ------------------------------------------------
+   Responsive
+   ------------------------------------------------ */
+
+@media (max-width: 600px) {
+	.kaiko-consent-banner-inner {
+		flex-direction: column;
+		align-items: stretch;
+		padding: 16px 18px;
+		gap: 14px;
+	}
+
+	.kaiko-consent-actions {
+		justify-content: space-between;
+	}
+
+	.kaiko-consent-modal-content {
+		padding: 24px 20px;
+	}
+}

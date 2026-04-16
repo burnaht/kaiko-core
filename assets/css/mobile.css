@@ -1,0 +1,334 @@
+/* ── KAIKO Mobile & Responsive Fixes ── */
+
+/* =============================================
+   NAVIGATION — Enhanced mobile hamburger & panel
+   ============================================= */
+
+@media (max-width: 768px) {
+	/* Slide-in panel instead of dropdown */
+	.kaiko-nav .kaiko-nav-links {
+		position: fixed;
+		top: 0;
+		right: -100%;
+		width: 80%;
+		max-width: 320px;
+		height: 100vh;
+		height: 100dvh;
+		background: rgba(255, 255, 255, 0.99);
+		backdrop-filter: blur(24px);
+		-webkit-backdrop-filter: blur(24px);
+		flex-direction: column;
+		padding: 5rem 2rem 2rem;
+		gap: 1.25rem;
+		border-left: 1px solid #e4e2de;
+		box-shadow: -8px 0 30px rgba(0, 0, 0, 0.1);
+		transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		z-index: 999;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.kaiko-nav .kaiko-nav-links.mobile-open {
+		right: 0;
+		display: flex;
+	}
+
+	/* Overlay behind slide-in panel */
+	.kaiko-nav-overlay {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.3);
+		z-index: 998;
+	}
+
+	.kaiko-nav-overlay.active {
+		display: block;
+	}
+
+	/* Larger tap targets for mobile nav links */
+	.kaiko-nav .kaiko-nav-links a,
+	.kaiko-nav .kaiko-nav-links .menu-item a {
+		font-size: 1.05rem !important;
+		padding: 0.5rem 0 !important;
+		display: block;
+	}
+
+	/* Full-width CTA in mobile panel */
+	nav.kaiko-nav .kaiko-nav-links a.kaiko-nav-cta {
+		margin-top: 0.75rem;
+		text-align: center;
+		width: 100%;
+		padding: 0.75rem 1.5rem !important;
+	}
+
+	/* Admin bar offset for slide-in panel */
+	.admin-bar .kaiko-nav .kaiko-nav-links {
+		top: 0;
+		padding-top: calc(5rem + 46px);
+	}
+}
+
+
+/* =============================================
+   HOMEPAGE — Mobile stacking & full-width CTAs
+   ============================================= */
+
+@media (max-width: 768px) {
+	/* Stack hero text above images */
+	.kaiko-home .k-hero-inner {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		text-align: center;
+	}
+
+	.kaiko-home .k-hero {
+		padding: 3rem 1.25rem;
+	}
+
+	.kaiko-home .k-hero-desc {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	/* Full-width CTA buttons */
+	.kaiko-home .k-hero-actions {
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: center;
+	}
+
+	.kaiko-home .btn-primary,
+	.kaiko-home .btn-secondary {
+		justify-content: center;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Hero image grid: 2-col on small screens */
+	.kaiko-home .k-hero-visual {
+		max-width: 100%;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
+	}
+
+	/* Remove offsets on mobile for cleaner look */
+	.kaiko-home .k-hero-img:nth-child(2) {
+		transform: none;
+	}
+	.kaiko-home .k-hero-img:nth-child(3) {
+		transform: none;
+	}
+
+	/* Categories: 2-col */
+	.kaiko-home .k-categories {
+		padding: 3rem 1.25rem;
+	}
+	.kaiko-home .k-categories-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+	}
+
+	/* Featured products: single column */
+	.kaiko-home .k-featured {
+		padding: 3rem 1.25rem;
+	}
+	.kaiko-home .k-products-grid {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	/* Stats: 2-col */
+	.kaiko-home .k-stats {
+		padding: 3rem 1.25rem;
+	}
+	.kaiko-home .k-stats-inner {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+	}
+
+	/* Why KAIKO: single column */
+	.kaiko-home .k-why {
+		padding: 3rem 1.25rem;
+	}
+
+	/* Testimonials: single column */
+	.kaiko-home .k-testimonials {
+		padding: 3rem 1.25rem;
+	}
+
+	/* Newsletter: stack input and button */
+	.kaiko-home .k-newsletter {
+		padding: 3rem 1.25rem;
+	}
+	.kaiko-home .k-newsletter-form {
+		flex-direction: column;
+	}
+}
+
+/* Tablet: 2-col products */
+@media (min-width: 769px) and (max-width: 1024px) {
+	.kaiko-home .k-products-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+
+/* =============================================
+   PRODUCTS SHOWCASE — Tablet 2-col, phone 1-col
+   ============================================= */
+
+@media (max-width: 768px) {
+	.kaiko-products .k-hero {
+		padding: 3rem 1.25rem;
+	}
+
+	/* 2-column grid on tablet-ish phones */
+	.kaiko-products .k-products-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+	}
+
+	.kaiko-products .k-products-section {
+		padding: 1.5rem 1.25rem 3rem;
+	}
+
+	.kaiko-products .k-filters {
+		padding: 1.5rem 1.25rem 0;
+	}
+
+	/* Horizontal scroll filters */
+	.kaiko-products .k-filters-bar {
+		justify-content: flex-start;
+		overflow-x: auto;
+		flex-wrap: nowrap;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: 8px;
+		scrollbar-width: none;
+	}
+	.kaiko-products .k-filters-bar::-webkit-scrollbar {
+		display: none;
+	}
+	.kaiko-products .k-filter-btn {
+		flex-shrink: 0;
+	}
+}
+
+/* Single column on small phones */
+@media (max-width: 480px) {
+	.kaiko-products .k-products-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Tablet: 2-col */
+@media (min-width: 769px) and (max-width: 1024px) {
+	.kaiko-products .k-products-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+
+/* =============================================
+   FOOTER — Stack columns vertically on mobile
+   ============================================= */
+
+@media (max-width: 768px) {
+	.kaiko-footer-inner {
+		grid-template-columns: 1fr;
+		padding: 2.5rem 1.25rem 2rem;
+		gap: 1.75rem;
+	}
+
+	.kaiko-footer-brand {
+		text-align: center;
+	}
+
+	.kaiko-footer-tagline {
+		max-width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.kaiko-footer-social {
+		justify-content: center;
+	}
+
+	.kaiko-footer-col {
+		text-align: center;
+	}
+
+	.kaiko-footer-links {
+		align-items: center;
+	}
+
+	.kaiko-footer-bar {
+		padding: 1rem 1.25rem;
+		text-align: center;
+	}
+}
+
+
+/* =============================================
+   LEGAL PAGES — Comfortable reading on mobile
+   ============================================= */
+
+@media (max-width: 768px) {
+	.kaiko-legal .k-hero {
+		padding: 3rem 1.25rem 2rem;
+	}
+
+	.kaiko-legal .k-hero h1 {
+		font-size: 1.5rem;
+	}
+
+	.kaiko-legal .k-legal-body {
+		max-width: 100%;
+		padding: 1.75rem 1.25rem 3rem;
+	}
+
+	.kaiko-legal .k-legal-body h2 {
+		font-size: 1.2rem;
+		margin-top: 2rem;
+		padding-top: 1.25rem;
+	}
+
+	.kaiko-legal .k-legal-body p,
+	.kaiko-legal .k-legal-body li {
+		font-size: 0.95rem;
+		line-height: 1.75;
+	}
+
+	.kaiko-legal .k-legal-contact {
+		padding: 1.5rem;
+	}
+}
+
+/* Tablet: constrain reading width with padding */
+@media (min-width: 769px) and (max-width: 1024px) {
+	.kaiko-legal .k-legal-body {
+		max-width: 720px;
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+}
+
+
+/* =============================================
+   GLOBAL MOBILE UTILITIES
+   ============================================= */
+
+@media (max-width: 768px) {
+	/* Prevent horizontal overflow on all KAIKO pages */
+	body.kaiko-template {
+		overflow-x: hidden;
+	}
+
+	/* Smooth scroll for internal links */
+	html {
+		scroll-behavior: smooth;
+	}
+}

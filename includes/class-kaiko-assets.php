@@ -73,6 +73,22 @@ class Kaiko_Assets {
 				KAIKO_CORE_VERSION
 			);
 		}
+
+		// Mobile responsive fixes
+		wp_enqueue_style(
+			'kaiko-mobile',
+			KAIKO_CORE_URL . 'assets/css/mobile.css',
+			[ 'kaiko-nav', 'kaiko-footer' ],
+			KAIKO_CORE_VERSION
+		);
+
+		// GDPR consent banner styles
+		wp_enqueue_style(
+			'kaiko-gdpr',
+			KAIKO_CORE_URL . 'assets/css/gdpr.css',
+			[],
+			KAIKO_CORE_VERSION
+		);
 	}
 
 	/**

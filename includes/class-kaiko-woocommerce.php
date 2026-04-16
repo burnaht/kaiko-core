@@ -5,7 +5,8 @@
  * Handles all WooCommerce-specific functionality:
  * - Cart fragment updates for the nav cart icon
  * - Product filter behaviour on the Products page
- * - Future: checkout customisations, subscription hooks, etc.
+ * - Branded email templates (header, footer, styles)
+ * - Email sender name and address
  *
  * Safe to load even if WooCommerce is deactivated — all methods
  * check for WC availability before executing.
@@ -16,6 +17,17 @@
 defined( 'ABSPATH' ) || exit;
 
 class Kaiko_WooCommerce {
+
+	/**
+	 * Email templates we override from kaiko-core's templates/emails/ directory.
+	 *
+	 * @var string[]
+	 */
+	private const EMAIL_TEMPLATES = [
+		'emails/email-header.php',
+		'emails/email-footer.php',
+		'emails/email-styles.php',
+	];
 
 	/**
 	 * Register hooks.
@@ -42,6 +54,13 @@ class Kaiko_WooCommerce {
 
 		// Add kaiko-template body class on WC pages for CSS scoping
 		add_filter( 'body_class', [ $this, 'add_wc_body_classes' ] );
+
+		// Branded email templates — redirect WC to load from kaiko-core
+		add_filter( 'woocommerce_locate_template', [ $this, 'locate_email_template' ], 10, 2 );
+
+		// Email sender identity
+		add_filter( 'woocommerce_email_from_name', [ $this, 'email_from_name' ] );
+		add_filter( 'woocommerce_email_from_address', [ $this, 'email_from_address' ] );
 	}
 
 	/**
@@ -165,5 +184,52 @@ class Kaiko_WooCommerce {
 			$classes[] = 'kaiko-template';
 		}
 		return $classes;
+	}
+
+	/* =================================================================
+	   Email Branding
+	   ================================================================= */
+
+	/**
+	 * Redirect WooCommerce to load email templates from kaiko-core.
+	 *
+	 * Only overrides the header, footer, and styles templates — all other
+	 * email templates (e.g. customer-processing-order.php) continue to
+	 * use WooCommerce defaults, which inherit our header/footer/styles.
+	 *
+	 * @param string $template      Full path to the located template.
+	 * @param string $template_name Template name (e.g. "emails/email-header.php").
+	 * @return string
+	 */
+	public function locate_email_template( string $template, string $template_name ): string {
+		if ( ! in_array( $template_name, self::EMAIL_TEMPLATES, true ) ) {
+			return $template;
+		}
+
+		$plugin_template = KAIKO_CORE_PATH . 'templates/' . $template_name;
+
+		if ( file_exists( $plugin_template ) ) {
+			return $plugin_template;
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Set the "From" name on WooCommerce emails.
+	 *
+	 * @return string
+	 */
+	public function email_from_name(): string {
+		return 'KAIKO';
+	}
+
+	/**
+	 * Set the "From" address on WooCommerce emails.
+	 *
+	 * @return string
+	 */
+	public function email_from_address(): string {
+		return 'orders@kaikoproducts.com';
 	}
 }
