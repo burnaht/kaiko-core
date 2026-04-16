@@ -87,9 +87,15 @@ class Kaiko_Nav {
 	public function render_fallback_links(): void {
 		$links = [
 			'/products/' => __( 'Products', 'kaiko-core' ),
-			'/about/'    => __( 'About', 'kaiko-core' ),
-			'/contact/'  => __( 'Contact', 'kaiko-core' ),
 		];
+
+		// Shop link only visible to logged-in users
+		if ( is_user_logged_in() ) {
+			$links['/shop/'] = __( 'Shop', 'kaiko-core' );
+		}
+
+		$links['/about/']   = __( 'About', 'kaiko-core' );
+		$links['/contact/'] = __( 'Contact', 'kaiko-core' );
 
 		foreach ( $links as $path => $label ) {
 			printf(

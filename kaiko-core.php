@@ -70,8 +70,10 @@ final class Kaiko_Core {
 			'class-kaiko-footer'       => 'Kaiko_Footer',
 			'class-kaiko-woodmart'     => 'Kaiko_WoodMart_Compat',
 			'class-kaiko-assets'       => 'Kaiko_Assets',
+			'class-kaiko-forms'        => 'Kaiko_Forms',
 			'class-kaiko-woocommerce'  => 'Kaiko_WooCommerce',
 			'class-kaiko-trade'        => 'Kaiko_Trade',
+			'class-kaiko-setup'        => 'Kaiko_Setup',
 		];
 
 		foreach ( $module_files as $file => $class ) {
@@ -117,6 +119,11 @@ final class Kaiko_Core {
 	 * Plugin activation.
 	 */
 	public function activate(): void {
+		// Schedule one-time page creation on next admin load
+		if ( class_exists( 'Kaiko_Setup' ) ) {
+			Kaiko_Setup::on_activate();
+		}
+
 		// Flush rewrite rules so template slugs register
 		flush_rewrite_rules();
 	}
@@ -150,6 +157,28 @@ final class Kaiko_Core {
 		}
 		$template = get_page_template_slug();
 		return $template && str_starts_with( $template, 'kaiko-' );
+	}
+
+	/**
+	 * Helper: Check if current page is part of the KAIKO frontend.
+	 *
+	 * Returns true for KAIKO template pages AND WooCommerce pages
+	 * (shop, product archives, single products). Used by Assets and
+	 * WoodMart modules to load nav/fonts/overrides on WC pages.
+	 */
+	public static function is_kaiko_frontend(): bool {
+		if ( self::is_kaiko_page() ) {
+			return true;
+		}
+		// Shop, product archives, single products
+		if ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+			return true;
+		}
+		// Cart and checkout pages
+		if ( function_exists( 'is_cart' ) && ( is_cart() || is_checkout() ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

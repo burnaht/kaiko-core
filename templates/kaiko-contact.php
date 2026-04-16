@@ -72,6 +72,11 @@ get_header(); ?>
 .kaiko-contact .k-form-group textarea { resize: vertical; min-height: 150px; }
 .kaiko-contact .k-form-submit { background: var(--teal); color: white; border: none; padding: 0.9rem 2rem; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; width: fit-content; }
 .kaiko-contact .k-form-submit:hover { background: var(--deep-teal); transform: translateY(-2px); }
+.kaiko-contact .k-form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.kaiko-contact .k-form-feedback { padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.92rem; font-weight: 500; line-height: 1.5; display: none; }
+.kaiko-contact .k-form-feedback.success { display: block; background: rgba(26,92,82,0.08); color: var(--teal); border: 1px solid rgba(26,92,82,0.2); }
+.kaiko-contact .k-form-feedback.error { display: block; background: rgba(220,38,38,0.06); color: #b91c1c; border: 1px solid rgba(220,38,38,0.15); }
+.kaiko-contact .k-hp-field { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; overflow: hidden; }
 
 .kaiko-contact .k-form-sidebar { display: flex; flex-direction: column; gap: 2rem; }
 .kaiko-contact .k-sidebar-card { background: var(--light-gray); border-radius: 12px; padding: 1.5rem; }
@@ -165,12 +170,15 @@ get_header(); ?>
 
 <section class="k-form-section reveal">
   <div class="k-form-container">
-    <form class="k-form" id="kaikoContactForm" onsubmit="event.preventDefault()">
+    <form class="k-form" id="kaikoContactForm">
+      <div class="k-form-feedback" id="kaikoFormFeedback"></div>
       <div class="k-form-group"><label for="kaiko-name">Your Name</label><input type="text" id="kaiko-name" name="name" required></div>
       <div class="k-form-group"><label for="kaiko-email">Email Address</label><input type="email" id="kaiko-email" name="email" required></div>
-      <div class="k-form-group"><label for="kaiko-subject">Subject</label><select id="kaiko-subject" name="subject" required><option value="">Select a subject</option><option value="general">General Enquiry</option><option value="trade">Trade/Wholesale</option><option value="product">Product Question</option><option value="press">Press/Media</option><option value="other">Other</option></select></div>
+      <div class="k-form-group"><label for="kaiko-subject">Subject</label><select id="kaiko-subject" name="subject" required><option value="">Select a subject</option><option value="general">General Enquiry</option><option value="trade">Trade Account</option><option value="product">Product Question</option><option value="returns">Returns</option></select></div>
       <div class="k-form-group"><label for="kaiko-message">Your Message</label><textarea id="kaiko-message" name="message" required></textarea></div>
-      <button type="submit" class="k-form-submit">Send Message</button>
+      <div class="k-hp-field" aria-hidden="true"><label for="kaiko-website">Website</label><input type="text" id="kaiko-website" name="kaiko_website" tabindex="-1" autocomplete="off"></div>
+      <?php wp_nonce_field( 'kaiko_contact_nonce', '_nonce', false ); ?>
+      <button type="submit" class="k-form-submit" id="kaikoFormSubmit">Send Message</button>
     </form>
     <aside class="k-form-sidebar">
       <div class="k-sidebar-card"><h3>Response Times</h3><div class="k-response-times"><div class="k-response-item"><span class="k-response-label">Monday–Friday</span><span class="k-response-value">Within 24hrs</span></div><div class="k-response-item"><span class="k-response-label">Saturday</span><span class="k-response-value">Limited</span></div><div class="k-response-item"><span class="k-response-label">Sunday</span><span class="k-response-value">Closed</span></div><div class="k-response-item"><span class="k-response-label">Trade Enquiries</span><span class="k-response-priority">Priority &lt;12hrs</span></div></div></div>
@@ -194,6 +202,7 @@ get_header(); ?>
 
 <script>
 (function() {
+  /* ── Scroll reveals ── */
   var reveals = document.querySelectorAll('.kaiko-contact .reveal');
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -205,6 +214,7 @@ get_header(); ?>
   }, { threshold: 0.1 });
   reveals.forEach(function(el) { observer.observe(el); });
 
+  /* ── FAQ accordion ── */
   document.querySelectorAll('.kaiko-contact .k-faq-trigger').forEach(function(trigger) {
     trigger.addEventListener('click', function() {
       var faqId = this.getAttribute('data-faq');
@@ -217,6 +227,49 @@ get_header(); ?>
         content.classList.add('active');
       }
     });
+  });
+
+  /* ── Contact form AJAX ── */
+  var form = document.getElementById('kaikoContactForm');
+  var feedback = document.getElementById('kaikoFormFeedback');
+  var submitBtn = document.getElementById('kaikoFormSubmit');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    feedback.className = 'k-form-feedback';
+    feedback.textContent = '';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending\u2026';
+
+    var data = new FormData(form);
+    data.append('action', 'kaiko_contact');
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>');
+    xhr.onload = function() {
+      var res;
+      try { res = JSON.parse(xhr.responseText); } catch(err) { res = null; }
+      if (res && res.success) {
+        feedback.className = 'k-form-feedback success';
+        feedback.textContent = res.data.message;
+        form.reset();
+      } else {
+        feedback.className = 'k-form-feedback error';
+        feedback.textContent = (res && res.data && res.data.message) ? res.data.message : 'Something went wrong. Please try again.';
+      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+    xhr.onerror = function() {
+      feedback.className = 'k-form-feedback error';
+      feedback.textContent = 'Network error. Please check your connection and try again.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    };
+    xhr.send(data);
   });
 })();
 </script>

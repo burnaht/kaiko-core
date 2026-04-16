@@ -22,10 +22,10 @@ class Kaiko_Assets {
 	}
 
 	/**
-	 * Enqueue stylesheets and scripts on KAIKO pages.
+	 * Enqueue stylesheets and scripts on KAIKO pages and WooCommerce pages.
 	 */
 	public function enqueue(): void {
-		if ( ! Kaiko_Core::is_kaiko_page() ) {
+		if ( ! Kaiko_Core::is_kaiko_frontend() ) {
 			return;
 		}
 
@@ -63,13 +63,23 @@ class Kaiko_Assets {
 				null
 			);
 		}
+
+		// My Account styles (only on the My Account template)
+		if ( is_page() && 'kaiko-my-account.php' === get_page_template_slug() ) {
+			wp_enqueue_style(
+				'kaiko-my-account',
+				KAIKO_CORE_URL . 'assets/css/my-account.css',
+				[ 'kaiko-nav' ],
+				KAIKO_CORE_VERSION
+			);
+		}
 	}
 
 	/**
 	 * Preload critical fonts for performance.
 	 */
 	public function preload_fonts(): void {
-		if ( ! Kaiko_Core::is_kaiko_page() ) {
+		if ( ! Kaiko_Core::is_kaiko_frontend() ) {
 			return;
 		}
 		?>

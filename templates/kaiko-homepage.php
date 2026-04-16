@@ -111,6 +111,10 @@ get_header(); ?>
 .kaiko-home .k-product-info h3 { font-size: 0.88rem; font-weight: 600; color: var(--k-dark); margin-bottom: 6px; line-height: 1.3; }
 .kaiko-home .k-product-info .price { font-size: 0.85rem; font-weight: 600; color: var(--k-teal); }
 .kaiko-home .k-product-info .price .old { text-decoration: line-through; color: var(--k-stone-400); font-weight: 400; margin-left: 6px; font-size: 0.78rem; }
+.kaiko-home .k-product-img img { width: 100%; height: 100%; object-fit: cover; }
+.kaiko-home .k-product-placeholder { font-size: 0.8rem; color: var(--k-stone-400); }
+.kaiko-home .k-trade-cta { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--k-teal); transition: color var(--k-dur); }
+.kaiko-home .k-trade-cta:hover { color: var(--k-deep-teal); }
 
 /* ── STATS ── */
 .kaiko-home .k-stats { padding: 80px clamp(1.5rem, 4vw, 4rem); background: var(--k-charcoal); }
@@ -231,17 +235,79 @@ get_header(); ?>
 </section>
 
 <!-- FEATURED PRODUCTS -->
+<?php
+$featured_products = wc_get_products( [
+	'status'   => 'publish',
+	'limit'    => 4,
+	'category' => [ 'reptile-care' ],
+	'orderby'  => 'date',
+	'order'    => 'DESC',
+] );
+
+// Fallback: if slug lookup returns nothing, try by category ID 21 directly.
+if ( empty( $featured_products ) ) {
+	$featured_products = wc_get_products( [
+		'status'  => 'publish',
+		'limit'   => 4,
+		'orderby' => 'date',
+		'order'   => 'DESC',
+		'tax_query' => [ [
+			'taxonomy' => 'product_cat',
+			'field'    => 'term_id',
+			'terms'    => 21,
+		] ],
+	] );
+}
+
+$is_trade_user = false;
+if ( is_user_logged_in() ) {
+	$current_user  = wp_get_current_user();
+	$is_trade_user = in_array( 'kaiko_trade', (array) $current_user->roles, true )
+	              || in_array( 'kaiko_pending', (array) $current_user->roles, true )
+	              || current_user_can( 'manage_woocommerce' );
+}
+?>
 <section class="k-featured reveal">
   <div class="k-featured-inner text-center">
     <p class="section-label">Featured Products</p>
     <h2 class="section-heading">Bestsellers This Month</h2>
     <p class="section-sub">Our most popular products, trusted by keepers and breeders across the UK.</p>
+    <?php if ( $featured_products ) : ?>
     <div class="k-products-grid">
-      <div class="k-product-card"><div class="k-product-img"><span class="k-product-badge badge-new">New</span>Product Image</div><div class="k-product-info"><h3>Naturalistic Water Bowl – Medium</h3><p class="price">&pound;8.50</p></div></div>
-      <div class="k-product-card"><div class="k-product-img">Product Image</div><div class="k-product-info"><h3>Humidity Hide – Ball Python</h3><p class="price">&pound;12.00</p></div></div>
-      <div class="k-product-card"><div class="k-product-img"><span class="k-product-badge badge-sale">Sale</span>Product Image</div><div class="k-product-info"><h3>Feeding Ledge – Crested Gecko</h3><p class="price">&pound;6.00 <span class="old">&pound;7.50</span></p></div></div>
-      <div class="k-product-card"><div class="k-product-img">Product Image</div><div class="k-product-info"><h3>Basking Platform – Bearded Dragon</h3><p class="price">&pound;14.00</p></div></div>
+      <?php foreach ( $featured_products as $fp ) :
+        $fp_permalink = $fp->get_permalink();
+        $fp_image_id  = $fp->get_image_id();
+        $fp_image     = $fp_image_id
+            ? wp_get_attachment_image( $fp_image_id, 'woocommerce_thumbnail', false, [ 'loading' => 'lazy' ] )
+            : '';
+        $fp_on_sale   = $fp->is_on_sale();
+        $fp_is_new    = ( ( time() - get_post_time( 'U', true, $fp->get_id() ) ) < 30 * DAY_IN_SECONDS );
+      ?>
+      <a href="<?php echo esc_url( $fp_permalink ); ?>" class="k-product-card">
+        <div class="k-product-img">
+          <?php if ( $fp_image ) : ?>
+            <?php echo $fp_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+          <?php else : ?>
+            <span class="k-product-placeholder">No Image</span>
+          <?php endif; ?>
+          <?php if ( $fp_on_sale ) : ?>
+            <span class="k-product-badge badge-sale">Sale</span>
+          <?php elseif ( $fp_is_new ) : ?>
+            <span class="k-product-badge badge-new">New</span>
+          <?php endif; ?>
+        </div>
+        <div class="k-product-info">
+          <h3><?php echo esc_html( $fp->get_name() ); ?></h3>
+          <?php if ( $is_trade_user ) : ?>
+            <div class="price"><?php echo $fp->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+          <?php else : ?>
+            <span class="k-trade-cta"><?php esc_html_e( 'Login for trade pricing', 'kaiko-core' ); ?> &rarr;</span>
+          <?php endif; ?>
+        </div>
+      </a>
+      <?php endforeach; ?>
     </div>
+    <?php endif; ?>
   </div>
 </section>
 

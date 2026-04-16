@@ -37,6 +37,9 @@ class Kaiko_Trade {
 		add_action( 'woocommerce_created_customer', [ $this, 'assign_pending_role' ], 20, 1 );
 		add_action( 'woocommerce_created_customer', [ $this, 'notify_admin_new_registration' ], 30, 1 );
 
+		// ── Shop access: redirect guests away from WC pages ──
+		add_action( 'template_redirect', [ $this, 'redirect_guests_from_shop' ] );
+
 		// ── Price display ──
 		add_filter( 'woocommerce_get_price_html', [ $this, 'filter_price_html' ], 9999, 2 );
 
@@ -204,6 +207,31 @@ class Kaiko_Trade {
 		);
 
 		wp_mail( $admin_email, $subject, $message );
+	}
+
+	// ─────────────────────────────────────────────
+	//  Shop Access
+	// ─────────────────────────────────────────────
+
+	/**
+	 * Redirect non-logged-in users from WooCommerce pages to /products/.
+	 *
+	 * Covers the shop page, product category/tag archives, and single
+	 * product pages. Logged-in users (any role) can access the shop.
+	 */
+	public function redirect_guests_from_shop(): void {
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
+		if ( ! function_exists( 'is_woocommerce' ) ) {
+			return;
+		}
+
+		if ( is_woocommerce() ) {
+			wp_safe_redirect( home_url( '/products/' ) );
+			exit;
+		}
 	}
 
 	// ─────────────────────────────────────────────

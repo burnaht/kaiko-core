@@ -44,10 +44,10 @@ class Kaiko_WoodMart_Compat {
 	}
 
 	/**
-	 * Output CSS overrides for WoodMart on KAIKO template pages.
+	 * Output CSS overrides for WoodMart on KAIKO and WooCommerce pages.
 	 */
 	public function output_override_css(): void {
-		if ( ! Kaiko_Core::is_kaiko_page() ) {
+		if ( ! Kaiko_Core::is_kaiko_frontend() ) {
 			return;
 		}
 		?>
@@ -70,18 +70,27 @@ class Kaiko_WoodMart_Compat {
 			body.kaiko-template .site-main { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; }
 			body.kaiko-template .entry-content { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
 			body.kaiko-template .website-wrapper { overflow-x: hidden; }
+
+			/* WooCommerce My Account: hide WoodMart's sidebar navigation */
+			body.kaiko-template .woocommerce-MyAccount-navigation { display: none !important; }
+			body.kaiko-template .woocommerce-MyAccount-content { width: 100% !important; float: none !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+			body.kaiko-template .woocommerce-account .woocommerce { display: block !important; }
+
+			/* Reset WoodMart's account page layout overrides */
+			body.kaiko-template .woocommerce-account .woocommerce-MyAccount-content .woocommerce-orders-table { border: none !important; }
+			body.kaiko-template .woocommerce-account .entry-content > .woocommerce { max-width: 100% !important; }
 		</style>
 		<?php
 	}
 
 	/**
-	 * Remove WoodMart page title action on KAIKO pages.
+	 * Remove WoodMart page title action on KAIKO and WooCommerce pages.
 	 *
 	 * This is a belt-and-braces approach alongside CSS.
 	 * Using priority 1 on `wp` so it runs after WoodMart registers its hooks.
 	 */
 	public function remove_page_title(): void {
-		if ( ! Kaiko_Core::is_kaiko_page() ) {
+		if ( ! Kaiko_Core::is_kaiko_frontend() ) {
 			return;
 		}
 
