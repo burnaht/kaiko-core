@@ -1,15 +1,22 @@
 /* ── KAIKO Mobile & Responsive Fixes ── */
 
 /* =============================================
-   NAVIGATION — Enhanced mobile hamburger & panel
+   NAVIGATION — Enhanced mobile slide-in panel
    ============================================= */
 
 @media (max-width: 768px) {
-	/* Slide-in panel instead of dropdown */
+	/*
+	 * Override nav.css mobile dropdown with a slide-in panel from the right.
+	 * Must reset nav.css values: left:auto overrides left:0, top:0 overrides top:64px,
+	 * border-bottom:none overrides nav.css dropdown border.
+	 */
 	.kaiko-nav .kaiko-nav-links {
+		display: none;
 		position: fixed;
 		top: 0;
+		left: auto;
 		right: -100%;
+		bottom: auto;
 		width: 80%;
 		max-width: 320px;
 		height: 100vh;
@@ -20,6 +27,7 @@
 		flex-direction: column;
 		padding: 5rem 2rem 2rem;
 		gap: 1.25rem;
+		border-bottom: none;
 		border-left: 1px solid #e4e2de;
 		box-shadow: -8px 0 30px rgba(0, 0, 0, 0.1);
 		transition: right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -29,24 +37,8 @@
 	}
 
 	.kaiko-nav .kaiko-nav-links.mobile-open {
-		right: 0;
 		display: flex;
-	}
-
-	/* Overlay behind slide-in panel */
-	.kaiko-nav-overlay {
-		display: none;
-		position: fixed;
-		top: 0;
-		left: 0;
 		right: 0;
-		bottom: 0;
-		background: rgba(0, 0, 0, 0.3);
-		z-index: 998;
-	}
-
-	.kaiko-nav-overlay.active {
-		display: block;
 	}
 
 	/* Larger tap targets for mobile nav links */

@@ -54,7 +54,10 @@ class Kaiko_WoodMart_Compat {
 		<style id="kaiko-woodmart-overrides">
 			/* Hide WoodMart's built-in header — KAIKO uses its own nav */
 			body.kaiko-template .whb-header,
-			body.kaiko-template .whb-header-clone { display: none !important; }
+			body.kaiko-template .whb-header-clone,
+			body.kaiko-template .whb-sticky-header,
+			body.kaiko-template .whb-row,
+			body.kaiko-template .wd-sticky-nav { display: none !important; }
 
 			/* Hide page title banner */
 			body.kaiko-template .page-title,
@@ -71,10 +74,17 @@ class Kaiko_WoodMart_Compat {
 			body.kaiko-template .entry-content { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
 			body.kaiko-template .website-wrapper { overflow-x: hidden; }
 
-			/* WooCommerce My Account: hide WoodMart's sidebar navigation */
+			/* WooCommerce My Account: hide WoodMart's sidebar navigation and
+			   duplicate account content when the KAIKO dashboard renders */
 			body.kaiko-template .woocommerce-MyAccount-navigation { display: none !important; }
 			body.kaiko-template .woocommerce-MyAccount-content { width: 100% !important; float: none !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
 			body.kaiko-template .woocommerce-account .woocommerce { display: block !important; }
+
+			/* When the KAIKO My Account template is active, hide WC/WoodMart account
+			   markup that renders outside .kaiko-myaccount to prevent overlap */
+			body.kaiko-template.kaiko-my-account .entry-content > .woocommerce { display: none !important; }
+			body.kaiko-template.kaiko-my-account .kaiko-myaccount ~ .woocommerce { display: none !important; }
+			body.kaiko-template.kaiko-my-account .wd-my-account-wrapper { display: none !important; }
 
 			/* Reset WoodMart's account page layout overrides */
 			body.kaiko-template .woocommerce-account .woocommerce-MyAccount-content .woocommerce-orders-table { border: none !important; }

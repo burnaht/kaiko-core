@@ -55,6 +55,9 @@ class Kaiko_WooCommerce {
 		// Add kaiko-template body class on WC pages for CSS scoping
 		add_filter( 'body_class', [ $this, 'add_wc_body_classes' ] );
 
+		// Enforce "ex. VAT" price suffix (prevents theme overrides)
+		add_filter( 'woocommerce_get_price_suffix', [ $this, 'enforce_price_suffix' ], 99, 2 );
+
 		// Branded email templates — redirect WC to load from kaiko-core
 		add_filter( 'woocommerce_locate_template', [ $this, 'locate_email_template' ], 10, 2 );
 
@@ -184,6 +187,24 @@ class Kaiko_WooCommerce {
 			$classes[] = 'kaiko-template';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Enforce "ex. VAT" price suffix.
+	 *
+	 * Runs at priority 99 to override any theme (e.g. WoodMart) that
+	 * may filter or clear the price suffix.
+	 *
+	 * @param string      $suffix  Current suffix HTML.
+	 * @param \WC_Product $product Product instance.
+	 * @return string
+	 */
+	public function enforce_price_suffix( string $suffix, $product ): string {
+		$configured = get_option( 'woocommerce_price_display_suffix', '' );
+		if ( '' !== $configured && '' === trim( strip_tags( $suffix ) ) ) {
+			return ' <small class="woocommerce-price-suffix">' . wp_kses_post( $configured ) . '</small>';
+		}
+		return $suffix;
 	}
 
 	/* =================================================================

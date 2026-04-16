@@ -18,6 +18,7 @@ class Kaiko_Assets {
 	 */
 	public function init(): void {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_global' ] );
 		add_action( 'wp_head', [ $this, 'preload_fonts' ], 5 );
 	}
 
@@ -82,7 +83,14 @@ class Kaiko_Assets {
 			KAIKO_CORE_VERSION
 		);
 
-		// GDPR consent banner styles
+	}
+
+	/**
+	 * Enqueue assets that load on ALL frontend pages (not just KAIKO pages).
+	 */
+	public function enqueue_global(): void {
+		// GDPR consent banner — must load on all pages since the
+		// banner renders via wp_footer on every frontend page.
 		wp_enqueue_style(
 			'kaiko-gdpr',
 			KAIKO_CORE_URL . 'assets/css/gdpr.css',

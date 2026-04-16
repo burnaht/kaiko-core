@@ -30,6 +30,9 @@ class Kaiko_Nav {
 		// Render the nav early in the page content via a hook
 		// Templates call: do_action('kaiko_before_content')
 		add_action( 'kaiko_before_content', [ $this, 'render' ] );
+
+		// Inject the Shop link into WP nav menus for logged-in users
+		add_filter( 'wp_nav_menu_items', [ $this, 'inject_shop_link' ], 10, 2 );
 	}
 
 	/**
@@ -45,6 +48,8 @@ class Kaiko_Nav {
 	 * Render the navigation bar.
 	 */
 	public function render(): void {
+		$is_logged_in = is_user_logged_in();
+		$cta_label    = $is_logged_in ? __( 'My Account', 'kaiko-core' ) : __( 'Trade Login', 'kaiko-core' );
 		?>
 		<nav class="kaiko-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary navigation', 'kaiko-core' ); ?>">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="kaiko-nav-logo">KAIKO</a>
@@ -57,7 +62,7 @@ class Kaiko_Nav {
 				<?php $this->render_links(); ?>
 				<?php $this->render_cart_icon(); ?>
 				<a href="<?php echo esc_url( home_url( '/my-account/' ) ); ?>" class="kaiko-nav-cta">
-					<?php esc_html_e( 'Trade Login', 'kaiko-core' ); ?>
+					<?php echo esc_html( $cta_label ); ?>
 				</a>
 			</div>
 		</nav>
@@ -83,13 +88,14 @@ class Kaiko_Nav {
 
 	/**
 	 * Hardcoded fallback links — used until a WP menu is assigned.
+	 *
+	 * Shop link appears between Products and About for logged-in users.
 	 */
 	public function render_fallback_links(): void {
 		$links = [
 			'/products/' => __( 'Products', 'kaiko-core' ),
 		];
 
-		// Shop link only visible to logged-in users
 		if ( is_user_logged_in() ) {
 			$links['/shop/'] = __( 'Shop', 'kaiko-core' );
 		}
@@ -104,6 +110,47 @@ class Kaiko_Nav {
 				esc_html( $label )
 			);
 		}
+	}
+
+	/**
+	 * Inject the Shop link into WP nav menus for logged-in users.
+	 *
+	 * Adds the link after the first menu item (Products) so it
+	 * appears between Products and About.
+	 *
+	 * @param string $items Menu HTML items.
+	 * @param object $args  Menu arguments.
+	 * @return string
+	 */
+	public function inject_shop_link( string $items, object $args ): string {
+		if ( self::MENU_LOCATION !== ( $args->theme_location ?? '' ) ) {
+			return $items;
+		}
+
+		if ( ! is_user_logged_in() ) {
+			return $items;
+		}
+
+		// Don't add if Shop is already in the menu.
+		if ( stripos( $items, '/shop/' ) !== false ) {
+			return $items;
+		}
+
+		$shop_item = sprintf(
+			'<li class="menu-item kaiko-shop-link"><a href="%s">%s</a></li>',
+			esc_url( home_url( '/shop/' ) ),
+			esc_html__( 'Shop', 'kaiko-core' )
+		);
+
+		// Insert after the first </li> (after Products).
+		$pos = strpos( $items, '</li>' );
+		if ( false !== $pos ) {
+			$items = substr( $items, 0, $pos + 5 ) . $shop_item . substr( $items, $pos + 5 );
+		} else {
+			$items .= $shop_item;
+		}
+
+		return $items;
 	}
 
 	/**
