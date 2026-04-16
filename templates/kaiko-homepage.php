@@ -70,7 +70,7 @@ get_header(); ?>
 .kaiko-home .btn-secondary:hover { border-color: var(--k-stone-400); background: var(--k-stone-50); }
 
 /* Hero image grid */
-.kaiko-home .k-hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.kaiko-home .k-hero-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; overflow: visible; padding: 20px 0; }
 .kaiko-home .k-hero-img { background: var(--k-stone-100); border-radius: var(--k-r-md); aspect-ratio: 1; overflow: hidden; border: 1px solid var(--k-stone-200); transition: transform 0.4s var(--k-ease); }
 .kaiko-home .k-hero-img img { width: 100%; height: 100%; object-fit: cover; }
 .kaiko-home .k-hero-img:hover { transform: scale(1.02); }
@@ -96,31 +96,6 @@ get_header(); ?>
 .kaiko-home .k-cat-icon svg { width: 22px; height: 22px; color: var(--k-teal); }
 .kaiko-home .k-cat-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--k-dark); margin-bottom: 4px; }
 .kaiko-home .k-cat-card p { font-size: 0.72rem; color: var(--k-stone-400); }
-
-/* ── FEATURED PRODUCTS ── */
-.kaiko-home .k-featured { padding: 80px clamp(1.5rem, 4vw, 4rem) 90px; background: var(--k-stone-50); }
-.kaiko-home .k-featured-inner { max-width: 1200px; margin: 0 auto; }
-.kaiko-home .k-products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
-.kaiko-home .k-product-card { background: var(--k-white); border: 1px solid var(--k-stone-200); border-radius: var(--k-r-md); overflow: hidden; transition: box-shadow var(--k-dur), transform var(--k-dur); cursor: pointer; }
-.kaiko-home .k-product-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.06); transform: translateY(-3px); }
-.kaiko-home .k-product-img { aspect-ratio: 1; background: var(--k-stone-100); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--k-stone-400); position: relative; }
-.kaiko-home .k-product-badge { position: absolute; top: 12px; right: 12px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--k-r-pill); }
-.kaiko-home .badge-new { background: var(--k-lime); color: var(--k-dark); }
-.kaiko-home .badge-sale { background: var(--k-gold); color: #fff; }
-.kaiko-home .k-product-info { padding: 16px 18px 18px; }
-.kaiko-home .k-product-info h3 { font-size: 0.88rem; font-weight: 600; color: var(--k-dark); margin-bottom: 6px; line-height: 1.3; }
-.kaiko-home .k-product-info .price { font-size: 0.85rem; font-weight: 600; color: var(--k-teal); }
-.kaiko-home .k-product-info .price .old { text-decoration: line-through; color: var(--k-stone-400); font-weight: 400; margin-left: 6px; font-size: 0.78rem; }
-.kaiko-home .k-product-img img { width: 100%; height: 100%; object-fit: cover; }
-.kaiko-home .k-product-placeholder { font-size: 0.8rem; color: var(--k-stone-400); }
-.kaiko-home .k-trade-cta { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--k-teal); transition: color var(--k-dur); }
-.kaiko-home .k-trade-cta:hover { color: var(--k-deep-teal); }
-
-/* ── STATS ── */
-.kaiko-home .k-stats { padding: 80px clamp(1.5rem, 4vw, 4rem); background: var(--k-charcoal); }
-.kaiko-home .k-stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
-.kaiko-home .k-stat-num { font-family: var(--k-font); font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; color: var(--k-lime); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
-.kaiko-home .k-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); letter-spacing: 0.02em; }
 
 /* ── WHY KAIKO ── */
 .kaiko-home .k-why { padding: 90px clamp(1.5rem, 4vw, 4rem); }
@@ -159,8 +134,6 @@ get_header(); ?>
   .kaiko-home .k-hero-actions { justify-content: center; }
   .kaiko-home .k-hero-visual { max-width: 400px; margin: 0 auto; }
   .kaiko-home .k-categories-grid { grid-template-columns: repeat(3, 1fr); }
-  .kaiko-home .k-products-grid { grid-template-columns: repeat(2, 1fr); }
-  .kaiko-home .k-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .kaiko-home .k-why-grid { grid-template-columns: 1fr; }
   .kaiko-home .k-testimonials-grid { grid-template-columns: 1fr; }
 }
@@ -170,8 +143,6 @@ get_header(); ?>
   .kaiko-home .k-hero-actions { flex-direction: column; align-items: stretch; }
   .kaiko-home .k-hero-visual { grid-template-columns: 1fr 1fr; gap: 10px; }
   .kaiko-home .k-categories-grid { grid-template-columns: repeat(2, 1fr); }
-  .kaiko-home .k-products-grid { grid-template-columns: 1fr; }
-  .kaiko-home .k-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
   .kaiko-home .k-newsletter-form { flex-direction: column; }
 }
 </style>
@@ -185,7 +156,7 @@ get_header(); ?>
   <div class="k-hero-inner">
     <div>
       <span class="k-hero-label">Wholesale Reptile Supplies</span>
-      <h1>Premium Habitat Equipment for <span class="accent">Exotic Keepers</span></h1>
+      <h1>Quality Habitat Equipment for <span class="accent">Exotic Keepers</span></h1>
       <p class="k-hero-desc">Handcrafted feeding bowls, humidity hides, and habitat accessories designed by reptile enthusiasts. Wholesale pricing for approved trade partners.</p>
       <div class="k-hero-actions">
         <a href="<?php echo esc_url( home_url('/shop/') ); ?>" class="btn-primary">Browse Products <span>&rarr;</span></a>
@@ -234,93 +205,6 @@ get_header(); ?>
   </div>
 </section>
 
-<!-- FEATURED PRODUCTS -->
-<?php
-$featured_products = wc_get_products( [
-	'status'   => 'publish',
-	'limit'    => 4,
-	'category' => [ 'reptile-care' ],
-	'orderby'  => 'date',
-	'order'    => 'DESC',
-] );
-
-// Fallback: if slug lookup returns nothing, try by category ID 21 directly.
-if ( empty( $featured_products ) ) {
-	$featured_products = wc_get_products( [
-		'status'  => 'publish',
-		'limit'   => 4,
-		'orderby' => 'date',
-		'order'   => 'DESC',
-		'tax_query' => [ [
-			'taxonomy' => 'product_cat',
-			'field'    => 'term_id',
-			'terms'    => 21,
-		] ],
-	] );
-}
-
-$is_trade_user = false;
-if ( is_user_logged_in() ) {
-	$current_user  = wp_get_current_user();
-	$is_trade_user = in_array( 'kaiko_trade', (array) $current_user->roles, true )
-	              || in_array( 'kaiko_pending', (array) $current_user->roles, true )
-	              || current_user_can( 'manage_woocommerce' );
-}
-?>
-<section class="k-featured reveal">
-  <div class="k-featured-inner text-center">
-    <p class="section-label">Featured Products</p>
-    <h2 class="section-heading">Bestsellers This Month</h2>
-    <p class="section-sub">Our most popular products, trusted by keepers and breeders across the UK.</p>
-    <?php if ( $featured_products ) : ?>
-    <div class="k-products-grid">
-      <?php foreach ( $featured_products as $fp ) :
-        $fp_permalink = $fp->get_permalink();
-        $fp_image_id  = $fp->get_image_id();
-        $fp_image     = $fp_image_id
-            ? wp_get_attachment_image( $fp_image_id, 'woocommerce_thumbnail', false, [ 'loading' => 'lazy' ] )
-            : '';
-        $fp_on_sale   = $fp->is_on_sale();
-        $fp_is_new    = ( ( time() - get_post_time( 'U', true, $fp->get_id() ) ) < 30 * DAY_IN_SECONDS );
-      ?>
-      <a href="<?php echo esc_url( $fp_permalink ); ?>" class="k-product-card">
-        <div class="k-product-img">
-          <?php if ( $fp_image ) : ?>
-            <?php echo $fp_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-          <?php else : ?>
-            <span class="k-product-placeholder">No Image</span>
-          <?php endif; ?>
-          <?php if ( $fp_on_sale ) : ?>
-            <span class="k-product-badge badge-sale">Sale</span>
-          <?php elseif ( $fp_is_new ) : ?>
-            <span class="k-product-badge badge-new">New</span>
-          <?php endif; ?>
-        </div>
-        <div class="k-product-info">
-          <h3><?php echo esc_html( $fp->get_name() ); ?></h3>
-          <?php if ( $is_trade_user ) : ?>
-            <div class="price"><?php echo $fp->get_price_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-          <?php else : ?>
-            <span class="k-trade-cta"><?php esc_html_e( 'Login for trade pricing', 'kaiko-core' ); ?> &rarr;</span>
-          <?php endif; ?>
-        </div>
-      </a>
-      <?php endforeach; ?>
-    </div>
-    <?php endif; ?>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="k-stats reveal">
-  <div class="k-stats-inner">
-    <div><div class="k-stat-num">2,400+</div><div class="k-stat-label">Products Shipped Monthly</div></div>
-    <div><div class="k-stat-num">150+</div><div class="k-stat-label">Trade Partners</div></div>
-    <div><div class="k-stat-num">12</div><div class="k-stat-label">Species Supported</div></div>
-    <div><div class="k-stat-num">4.9</div><div class="k-stat-label">Average Rating</div></div>
-  </div>
-</section>
-
 <!-- WHY KAIKO -->
 <section class="k-why reveal">
   <div class="k-why-inner text-center">
@@ -342,7 +226,7 @@ if ( is_user_logged_in() ) {
     <h2 class="section-heading">Trusted by the Community</h2>
     <div class="k-testimonials-grid">
       <div class="k-testimonial-card"><div class="k-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="k-testimonial-text">"The quality is night and day compared to what we were stocking before. Customers notice the difference."</p><p class="k-testimonial-author">James T.</p><p class="k-testimonial-role">Reptile Retailer, Bristol</p></div>
-      <div class="k-testimonial-card"><div class="k-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="k-testimonial-text">"Finally, a supplier that understands what species actually need. The crested gecko ledges are perfect."</p><p class="k-testimonial-author">Sarah M.</p><p class="k-testimonial-role">Exotic Pet Shop, Manchester</p></div>
+      <div class="k-testimonial-card"><div class="k-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="k-testimonial-text">"Finally, a supplier that understands what species actually need. The escape proof design roach bowls are exactly what I needed."</p><p class="k-testimonial-author">Sarah M.</p><p class="k-testimonial-role">Reptile Keeper, Manchester</p></div>
       <div class="k-testimonial-card"><div class="k-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="k-testimonial-text">"Fast dispatch, great packaging, and useful products. The trade programme is well run too."</p><p class="k-testimonial-author">Daniel K.</p><p class="k-testimonial-role">Breeder, Nottingham</p></div>
     </div>
   </div>
@@ -377,35 +261,7 @@ if ( is_user_logged_in() ) {
   }, { threshold: 0.12 });
   reveals.forEach(function(el) { observer.observe(el); });
 
-  // Animated stat counters
-  var statNums = document.querySelectorAll('.kaiko-home .k-stat-num');
-  var statObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        var el = entry.target;
-        var text = el.textContent;
-        var num = parseFloat(text.replace(/[^0-9.]/g, ''));
-        var suffix = text.replace(/[0-9.,]/g, '');
-        var hasComma = text.indexOf(',') > -1;
-        var isDecimal = text.indexOf('.') > -1 && !hasComma;
-        var duration = 1200;
-        var start = performance.now();
-        function animate(now) {
-          var t = Math.min((now - start) / duration, 1);
-          var ease = 1 - Math.pow(1 - t, 3);
-          var val = num * ease;
-          if (isDecimal) val = val.toFixed(1);
-          else val = Math.round(val);
-          if (hasComma) val = Number(val).toLocaleString();
-          el.textContent = val + suffix;
-          if (t < 1) requestAnimationFrame(animate);
-        }
-        requestAnimationFrame(animate);
-        statObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-  statNums.forEach(function(el) { statObserver.observe(el); });
+
 })();
 </script>
 
