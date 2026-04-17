@@ -40,6 +40,9 @@ class Kaiko_Trade {
 		// ── Shop access: redirect guests away from WC pages ──
 		add_action( 'template_redirect', [ $this, 'redirect_guests_from_shop' ] );
 
+		// ── Checkout/cart access: bounce pending users back to my-account ──
+		add_action( 'template_redirect', [ $this, 'redirect_pending_from_checkout' ] );
+
 		// ── Price display ──
 		add_filter( 'woocommerce_get_price_html', [ $this, 'filter_price_html' ], 9999, 2 );
 
@@ -232,6 +235,40 @@ class Kaiko_Trade {
 			wp_safe_redirect( home_url( '/products/' ) );
 			exit;
 		}
+	}
+
+	/**
+	 * Belt-and-braces guard: redirect kaiko_pending users away from
+	 * the cart and checkout pages back to their account dashboard.
+	 *
+	 * The is_purchasable filter already prevents add-to-cart, but if a
+	 * pending user lands on /checkout/ via a stale link, kick them back.
+	 */
+	public function redirect_pending_from_checkout(): void {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+		if ( ! function_exists( 'is_checkout' ) ) {
+			return;
+		}
+		if ( ! is_checkout() && ! is_cart() ) {
+			return;
+		}
+
+		$user = wp_get_current_user();
+		if ( ! in_array( 'kaiko_pending', (array) $user->roles, true ) ) {
+			return;
+		}
+		if ( current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		wc_add_notice(
+			__( 'Your trade application is under review. You will be able to order as soon as you’re approved.', 'kaiko-core' ),
+			'notice'
+		);
+		wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+		exit;
 	}
 
 	// ─────────────────────────────────────────────
